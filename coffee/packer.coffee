@@ -171,7 +171,7 @@ class Packer
 
     addedHandler: (path) ->
         if @indexer.has path
-            console.log 'file added: ', path
+            #console.log 'file added: ', path
             @updates.push path: path
             @updateLater()
         null
@@ -179,14 +179,14 @@ class Packer
 
     changedHandler: (path) ->
         if @indexer.has path
-            console.log 'file changed: ', path
+            #console.log 'file changed: ', path
             @updates.push path: path
             @updateLater()
         null
 
 
     unlinkedHandler: (path) ->
-        console.log 'file unlinked: ', path
+        #console.log 'file unlinked: ', path
         @updates.push
             path:    path
             removed: true
@@ -263,7 +263,7 @@ class Packer
     #    00     00  000   000  000     000     00000000        000        000   000   0000000  000   000
     
     writePackages: () ->
-        console.log 'writePackages!!!'
+        #console.log 'write packs...'
         # remove current packs and chunks
         @removeSources(pack.out)  for pack  in @packs  if @packs
         @removeSources(chunk.out) for chunk in @chunks if @chunks
@@ -455,7 +455,7 @@ class Packer
     initSourceMapping: (pack, type) ->
         if type == 'pack'
             if pack.index == 0
-                @lineOffset = 184
+                @lineOffset = 183
             else
                 @lineOffset = 54
         else
@@ -513,7 +513,7 @@ class Packer
     #    00     00  000   000  000     000     00000000        000        000   000   0000000  000   000
 
     writePack: (p) ->
-        console.log 'write pack: ', p.file.path, p.out
+        #console.log 'write pack: ', Path.relative(@cfg.base, p.file.path), '->', Path.relative(@cfg.base, p.out)
         @initSourceMapping(p, 'pack')
         @addSource p, @fileMap[path] for path of p.req
         p.code = p.code.slice 0, -3
@@ -526,7 +526,7 @@ class Packer
         FS.writeFile p.out, p.code, 'utf8', (error) =>
             --@openFiles
             if error
-                console.log 'packer.writePack: pack write error: ', p.out
+                console.log 'ERROR in packer.writePack: ', Path.relative(@cfg.base, p.out)
             if @openFiles == 0
                 @completed()
             null
@@ -554,7 +554,7 @@ class Packer
         FS.writeFile p.out, p.code, 'utf8', (error) =>
             --@openFiles
             if error
-                console.log 'packer.writeChunk: chunk write error: ', p.out
+                console.log 'ERROR in packer.writeChunk: ', Path.relative(@cfg.base, p.out)
             if @openFiles == 0
                 @completed()
             null
@@ -645,7 +645,7 @@ class Packer
             parent.req[path]      = true
             file.ref[parent.path] = true
 
-        console.log 'read file: ', path
+        #console.log 'read file: ', path
 
         ++@openFiles
         FS.readFile path, 'utf8', (error, source) =>
@@ -677,7 +677,7 @@ class Packer
                                         'NODE_ENV': @NODE_ENV
                             #console.log 'UGLIFY: ', result.map
                         catch e
-                            console.log 'error while uglifying: ', path, e
+                            console.log 'ERROR while uglifying: ', path, e
 
                         if result
                             source = result.code
@@ -694,7 +694,7 @@ class Packer
                             presets: [Babel_es2015]
                         result = Babel.transform source, babelOptions
                         source = result.code
-                        console.log 'babel:       transformed -> ' + Path.relative @cfg.base, path
+                        #console.log 'babel: transformed -> ' + Path.relative @cfg.base, path
 
 
                 # handle source map
@@ -875,9 +875,10 @@ class Packer
 
     completed: () ->
         if @errors.length
-            for error, index in @errors
-                console.log 'ERROR: ', error, index
-        console.log 'packer ready!!!'
+            for e in @errors
+                console.log "ERROR in #{Path.relative @cfg.base, e.path}: #{e.error}"
+        d = new Date()
+        console.log "packer ready #{if @errors.length then 'with errors ' else '✓ '}(#{d.getHours()}:#{d.getMinutes()}:#{d.getSeconds()} #{d.getFullYear()}.#{d.getMonth()}.#{d.getDate()})"
         null
 
 

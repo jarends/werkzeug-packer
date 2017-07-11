@@ -23,7 +23,7 @@
       if (!e.detail.registered) {
         console.log("Error registering chunk '" + this.cfg.path + "': ", e);
       } else {
-        console.log((this.cfg.chunk ? 'chunk' : 'pack') + " '" + this.cfg.path + "' registered");
+        null;
       }
       return null;
     };

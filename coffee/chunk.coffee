@@ -13,7 +13,7 @@ class Chunk
         if not e.detail.registered
             console.log "Error registering chunk '#{@cfg.path}': ", e
         else
-            console.log "#{if @cfg.chunk then 'chunk' else 'pack'} '#{@cfg.path}' registered"
+            null #console.log "#{if @cfg.chunk then 'chunk' else 'pack'} '#{@cfg.path}' registered"
         null
 
 return new Chunk()

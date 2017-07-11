@@ -134,7 +134,6 @@
 
     Packer.prototype.addedHandler = function(path) {
       if (this.indexer.has(path)) {
-        console.log('file added: ', path);
         this.updates.push({
           path: path
         });
@@ -145,7 +144,6 @@
 
     Packer.prototype.changedHandler = function(path) {
       if (this.indexer.has(path)) {
-        console.log('file changed: ', path);
         this.updates.push({
           path: path
         });
@@ -155,7 +153,6 @@
     };
 
     Packer.prototype.unlinkedHandler = function(path) {
-      console.log('file unlinked: ', path);
       this.updates.push({
         path: path,
         removed: true
@@ -233,7 +230,6 @@
 
     Packer.prototype.writePackages = function() {
       var chunk, file, i, j, k, l, len, len1, len2, loader, m, p, pack, packages, path, ref, ref1, ref2;
-      console.log('writePackages!!!');
       if (this.packs) {
         ref = this.packs;
         for (j = 0, len = ref.length; j < len; j++) {
@@ -413,7 +409,7 @@
       var origin;
       if (type === 'pack') {
         if (pack.index === 0) {
-          this.lineOffset = 184;
+          this.lineOffset = 183;
         } else {
           this.lineOffset = 54;
         }
@@ -468,7 +464,6 @@
 
     Packer.prototype.writePack = function(p) {
       var path;
-      console.log('write pack: ', p.file.path, p.out);
       this.initSourceMapping(p, 'pack');
       for (path in p.req) {
         this.addSource(p, this.fileMap[path]);
@@ -482,7 +477,7 @@
         return function(error) {
           --_this.openFiles;
           if (error) {
-            console.log('packer.writePack: pack write error: ', p.out);
+            console.log('ERROR in packer.writePack: ', Path.relative(_this.cfg.base, p.out));
           }
           if (_this.openFiles === 0) {
             _this.completed();
@@ -508,7 +503,7 @@
         return function(error) {
           --_this.openFiles;
           if (error) {
-            console.log('packer.writeChunk: chunk write error: ', p.out);
+            console.log('ERROR in packer.writeChunk: ', Path.relative(_this.cfg.base, p.out));
           }
           if (_this.openFiles === 0) {
             _this.completed();
@@ -588,7 +583,6 @@
         parent.req[path] = true;
         file.ref[parent.path] = true;
       }
-      console.log('read file: ', path);
       ++this.openFiles;
       FS.readFile(path, 'utf8', (function(_this) {
         return function(error, source) {
@@ -624,7 +618,7 @@
                   });
                 } catch (error1) {
                   e = error1;
-                  console.log('error while uglifying: ', path, e);
+                  console.log('ERROR while uglifying: ', path, e);
                 }
                 if (result) {
                   source = result.code;
@@ -641,7 +635,6 @@
                 };
                 result = Babel.transform(source, babelOptions);
                 source = result.code;
-                console.log('babel:       transformed -> ' + Path.relative(_this.cfg.base, path));
               }
             }
             if (/.js$/.test(path)) {
@@ -813,15 +806,16 @@
     };
 
     Packer.prototype.completed = function() {
-      var error, index, j, len, ref;
+      var d, e, j, len, ref;
       if (this.errors.length) {
         ref = this.errors;
-        for (index = j = 0, len = ref.length; j < len; index = ++j) {
-          error = ref[index];
-          console.log('ERROR: ', error, index);
+        for (j = 0, len = ref.length; j < len; j++) {
+          e = ref[j];
+          console.log("ERROR in " + (Path.relative(this.cfg.base, e.path)) + ": " + e.error);
         }
       }
-      console.log('packer ready!!!');
+      d = new Date();
+      console.log("packer ready " + (this.errors.length ? 'with errors ' : '✓ ') + "(" + (d.getHours()) + ":" + (d.getMinutes()) + ":" + (d.getSeconds()) + " " + (d.getFullYear()) + "." + (d.getMonth()) + "." + (d.getDate()) + ")");
       return null;
     };
 

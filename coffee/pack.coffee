@@ -10,7 +10,7 @@ class Pack
 
 
     prepare: () ->
-        console.log "packer: #{@cfg.path}, total packs: #{@cfg.total}"
+        #console.log "packer: #{@cfg.path}, total packs: #{@cfg.total}"
         @startTime  = Date.now()
         @registered = 1
         pack        = @cfg.pack
@@ -94,7 +94,7 @@ class Pack
             detail.registered = true
             pack = detail.pack
             if pack
-                console.log "add #{if detail.chunk then 'chunk' else 'pack'}: ", detail.path
+                null #console.log "add #{if detail.chunk then 'chunk' else 'pack'}: ", detail.path
                 @addPack pack
             else
                 console.log "Error adding pack: pack doesn't exists in details: ", detail

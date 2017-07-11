@@ -19,7 +19,6 @@
 
     Pack.prototype.prepare = function() {
       var pack;
-      console.log("packer: " + this.cfg.path + ", total packs: " + this.cfg.total);
       this.startTime = Date.now();
       this.registered = 1;
       pack = this.cfg.pack;
@@ -130,7 +129,7 @@
         detail.registered = true;
         pack = detail.pack;
         if (pack) {
-          console.log("add " + (detail.chunk ? 'chunk' : 'pack') + ": ", detail.path);
+          null;
           this.addPack(pack);
         } else {
           console.log("Error adding pack: pack doesn't exists in details: ", detail);

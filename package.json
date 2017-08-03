@@ -1,6 +1,6 @@
 {
     "name": "werkzeug-packer",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "packs commonjs modules to browser ready bundles",
     "main": "./js/packer.js",
     "bin": {

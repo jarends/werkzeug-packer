@@ -34,7 +34,7 @@ getPackCode = (p) -> """
         index:      #{p.index},
         total:      #{p.total},
         startIndex: #{p.file.index},
-        type:       'register::#{p.id}',
+        type:       'addPack#{p.id}',
         path:       '#{p.file.path}',
         pack:       pack
     };
@@ -50,7 +50,7 @@ getChunkCode = (p) -> """
 (function(pack)
 {
     var cfg = {
-        type:       'register::#{p.id}',
+        type:       'addPack#{p.id}',
         path:       '#{p.file.path}',
         chunk:      '#{p.chunk}',
         pack:       pack
@@ -114,7 +114,7 @@ class Packer
         @chunks     = null  # packaging: list of current chunks
         @errors     = []
         @updates    = []
-        @id         = Math.random() + '_' + Date.now()
+        @id         = ''
         @useBabel   = @cfg.useBabel  != false
         @useUglify  = @cfg.useUglify == true
         @NODE_ENV   = @cfg.NODE_ENV or ENV
@@ -478,7 +478,6 @@ class Packer
 
         map = file.sourceMap
         if map
-
             out            = Path.dirname pack.out
             srcBase        = Path.resolve Path.dirname(file.path), map.sourceRoot or ''
             map.file       = Path.relative out, file.path
@@ -712,7 +711,7 @@ class Packer
                         file.sourceMap = map
 
                         # only touch sourcesContent to fix firefox sourcemap bug
-                        if fixFF
+                        if fixFF and map
                             map.sourcesContent = []
 
                             # include sources, if firefox fixing is enabled

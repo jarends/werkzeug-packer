@@ -37,11 +37,11 @@
   Chok = null;
 
   getPackCode = function(p) {
-    return "(function(pack)\n{\n    var win = window,\n        process = win.process || (win.process = {}),\n        env     = process.env || (process.env = {}),\n        cfg     = {\n        index:      " + p.index + ",\n        total:      " + p.total + ",\n        startIndex: " + p.file.index + ",\n        type:       'register::" + p.id + "',\n        path:       '" + p.file.path + "',\n        pack:       pack\n    };\n    env.NODE_ENV = env.NODE_ENV || '" + p.env + "'\n    var packer = " + (p.index === 0 ? PACK_CODE : CHUNK_CODE) + "\n    packer.init(cfg);\n})({\n" + p.code + "\n});";
+    return "(function(pack)\n{\n    var win = window,\n        process = win.process || (win.process = {}),\n        env     = process.env || (process.env = {}),\n        cfg     = {\n        index:      " + p.index + ",\n        total:      " + p.total + ",\n        startIndex: " + p.file.index + ",\n        type:       'addPack" + p.id + "',\n        path:       '" + p.file.path + "',\n        pack:       pack\n    };\n    env.NODE_ENV = env.NODE_ENV || '" + p.env + "'\n    var packer = " + (p.index === 0 ? PACK_CODE : CHUNK_CODE) + "\n    packer.init(cfg);\n})({\n" + p.code + "\n});";
   };
 
   getChunkCode = function(p) {
-    return "(function(pack)\n{\n    var cfg = {\n        type:       'register::" + p.id + "',\n        path:       '" + p.file.path + "',\n        chunk:      '" + p.chunk + "',\n        pack:       pack\n    };\n    var chunk = " + CHUNK_CODE + "\n    chunk.init(cfg);\n})({\n" + p.code + "\n});";
+    return "(function(pack)\n{\n    var cfg = {\n        type:       'addPack" + p.id + "',\n        path:       '" + p.file.path + "',\n        chunk:      '" + p.chunk + "',\n        pack:       pack\n    };\n    var chunk = " + CHUNK_CODE + "\n    chunk.init(cfg);\n})({\n" + p.code + "\n});";
   };
 
   Indexer = (function() {
@@ -84,7 +84,7 @@
       this.chunks = null;
       this.errors = [];
       this.updates = [];
-      this.id = Math.random() + '_' + Date.now();
+      this.id = '';
       this.useBabel = this.cfg.useBabel !== false;
       this.useUglify = this.cfg.useUglify === true;
       this.NODE_ENV = this.cfg.NODE_ENV || ENV;
@@ -647,7 +647,7 @@
               if (_this.isFile(mapPath) && (path.indexOf(_this.out) === 0 || includeExt)) {
                 map = map || _this.getJson(mapPath || {});
                 file.sourceMap = map;
-                if (fixFF) {
+                if (fixFF && map) {
                   map.sourcesContent = [];
                   ref = map.sources;
                   for (i = j = 0, len = ref.length; j < len; i = ++j) {

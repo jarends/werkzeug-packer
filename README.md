@@ -15,7 +15,7 @@ What werkzeug-packer does:
   
 ### Usage  
   
-```
+```text
 
     # for global commandline use:
     npm install -g werkzeug-packer

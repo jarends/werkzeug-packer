@@ -711,7 +711,7 @@ class Packer
                         file.sourceMap = map
 
                         # only touch sourcesContent to fix firefox sourcemap bug
-                        if fixFF and map
+                        if fixFF and map and map.sources
                             map.sourcesContent = []
 
                             # include sources, if firefox fixing is enabled

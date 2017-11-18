@@ -647,7 +647,8 @@
               if (_this.isFile(mapPath) && (path.indexOf(_this.out) === 0 || includeExt)) {
                 map = map || _this.getJson(mapPath) || {};
                 file.sourceMap = map;
-                if (fixFF && map && map.sources) {
+                map.sources = map.sources || [];
+                if (fixFF && map) {
                   map.sourcesContent = [];
                   ref = map.sources;
                   for (i = j = 0, len = ref.length; j < len; i = ++j) {

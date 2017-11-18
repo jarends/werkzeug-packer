@@ -709,9 +709,9 @@ class Packer
                     if @isFile(mapPath) and (path.indexOf(@out) == 0 or includeExt)
                         map            = map or @getJson(mapPath) or {}
                         file.sourceMap = map
-
+                        map.sources    = map.sources or []
                         # only touch sourcesContent to fix firefox sourcemap bug
-                        if fixFF and map and map.sources
+                        if fixFF and map
                             map.sourcesContent = []
 
                             # include sources, if firefox fixing is enabled

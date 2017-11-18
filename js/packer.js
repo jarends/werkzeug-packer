@@ -645,7 +645,7 @@
               fixFF = _this.cfg.fffMaps;
               includeExt = _this.cfg.externalMaps;
               if (_this.isFile(mapPath) && (path.indexOf(_this.out) === 0 || includeExt)) {
-                map = map || _this.getJson(mapPath || {});
+                map = map || _this.getJson(mapPath) || {};
                 file.sourceMap = map;
                 if (fixFF && map) {
                   map.sourcesContent = [];

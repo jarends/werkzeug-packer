@@ -707,7 +707,7 @@ class Packer
                     includeExt = @cfg.externalMaps
 
                     if @isFile(mapPath) and (path.indexOf(@out) == 0 or includeExt)
-                        map            = map or @getJson mapPath or {}
+                        map            = map or @getJson(mapPath) or {}
                         file.sourceMap = map
 
                         # only touch sourcesContent to fix firefox sourcemap bug

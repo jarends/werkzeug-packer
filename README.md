@@ -11,6 +11,7 @@ What werkzeug-packer does:
 - you can require json, css, html and txt files in your code, which will be inlined as strings (except json, which exports an object)  
 - has little support for es6 node modules (es6 will be transpiled using babel)
 - experimental uglifying (leads to incorrect source mappings)
+- node core modules will be ignored
      
   
 ### Usage  

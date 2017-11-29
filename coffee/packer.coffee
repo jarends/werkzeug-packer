@@ -4,6 +4,7 @@ Path               = require 'path'
 Dict               = require 'jsdictionary'
 JMin               = require 'jsonminify'
 EMap               = require 'emap'
+NODE_MODULES       = require('repl')._builtinLibs
 PACK_CODE          = FS.readFileSync Path.join(__dirname, '../js', 'pack.js'),  'utf8'
 CHUNK_CODE         = FS.readFileSync Path.join(__dirname, '../js', 'chunk.js'), 'utf8'
 MULTI_COMMENT_MAP  = /\/\*\s*[@#]\s*sourceMappingURL\s*=\s*([^\s]*)\s*\*\//g
@@ -14,8 +15,6 @@ JS_REG             = /\.coffee$|\.ts$/
 Babel              = null
 Babel_es2015       = null
 Chok               = null
-
-
 
 
 #     0000000   0000000   0000000    00000000
@@ -757,6 +756,9 @@ class Packer
             isLoader = loaderRegex.test name
             name     = name.replace loaderRegex, '' if isLoader
 
+            if NODE_MODULES.indexOf(name) > -1
+                return args[0]
+
             if /\.|\//.test(name[0])
                 modulePath = @getRelModulePath base, name
             else
@@ -877,7 +879,7 @@ class Packer
             for e in @errors
                 console.log "ERROR in #{Path.relative @cfg.base, e.path}: #{e.error}"
         d = new Date()
-        console.log "packer ready #{if @errors.length then 'with errors ' else '✓ '}(#{d.getHours()}:#{d.getMinutes()}:#{d.getSeconds()} #{d.getFullYear()}.#{d.getMonth()}.#{d.getDate()})"
+        console.log "packer ready #{if @errors.length then 'with errors ' else '✓'} #{@cfg.bundles[0].out} - #{d.getHours()}:#{d.getMinutes()}:#{d.getSeconds()} #{d.getFullYear()}.#{d.getMonth()}.#{d.getDate()}"
         null
 
 

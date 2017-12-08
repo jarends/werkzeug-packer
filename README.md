@@ -49,16 +49,16 @@ werkzeug-packer can be configured with the following flags:
 ```text
     
 -p  --pack          [file] [file?]  Specify the input file and optional an output file.
-                                    If the output file is omitted, the input file's name is used
+                                    If the output file is omitted, the input file's name is used.
                                     with a 'pack' inserted before the extension:
                                     e.g.: main.js -> main.pack.js
                                     Can be used multiple times for each module to bundle.
 -w  --watch                         Start watching and repack on changes.
 -bp --base-path     [file]          Specify a base path to resolve relative files used with -p flag.
--ub --use-babel     [bool?]         To disable babel enter false. The default is true.
--uu --use-uglify    [bool?]         To uglify input sources enter true. The default is false.
--im --inline-maps   [bool?]         To inline sources in maps enter true. The default is false.
--em --external-maps [bool?]         To include external maps enter true. The default is false.
+-ub --use-babel                     Enable babel for es6 code.
+-uu --use-uglify                    Enable experimantal uglify usage. 
+-im --inline-maps                   Include source code in source maps. 
+-em --external-maps                 Include soyrce maps from node modules.
 -cp --chunk-prefix  [path]          Enter a path and/or a file prefix for all packed chunks.
                                     The default is './js/chunk_'.
 -lp --loader-prefix [string]        Enter a string to prifix required path's for chunk loading.

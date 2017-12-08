@@ -5,11 +5,11 @@ cfg    =
     watch:        false
     bundles:      []
     base:         process.cwd()
-    useBabel:     true
+    useBabel:     false
     useUglify:    false
     loaderPrefix: 'es6-promise!'
     chunks:       './js/chunk_'
-    fffMaps:      true
+    fffMaps:      false
     externalMaps: false
 
 
@@ -90,13 +90,8 @@ cfgFromArgs = () ->
                             out: outPath
 
             when '-w' or '--watch'
-                use = args[index + 1]
-                if use == 'false' or use == 'true'
-                    cfg.watch = use == 'true'
-                    index = index + 2
-                else
-                    cfg.watch = true
-                    ++index
+                cfg.watch = true
+                ++index
 
             when '-h' or '--help'
                 if args.length > 1
@@ -122,40 +117,20 @@ cfgFromArgs = () ->
                     index = index + 2
 
             when '-ub' or '--use-babel'
-                use = args[index + 1]
-                if use == 'false' or use == 'true'
-                    cfg.useBabel = use == 'true'
-                    index = index + 2
-                else
-                    cfg.useBabel = true
-                    ++index
+                cfg.useBabel = true
+                ++index
 
             when '-uu' or '--use-uglify'
-                use = args[index + 1]
-                if use == 'false' or use == 'true'
-                    cfg.useUglify = use == 'true'
-                    index = index + 2
-                else
-                    cfg.useUglify = true
-                    ++index
+                cfg.useUglify = true
+                ++index
 
             when '-im' or '--inline-maps'
-                use = args[index + 1]
-                if use == 'false' or use == 'true'
-                    cfg.fffMaps = use == 'true'
-                    index = index + 2
-                else
-                    cfg.fffMaps = true
-                    ++index
+                cfg.fffMaps = true
+                ++index
 
             when '-em' or '--external-maps'
-                use = args[index + 1]
-                if use == 'false' or use == 'true'
-                    cfg.externalMaps = use == 'true'
-                    index = index + 2
-                else
-                    cfg.externalMaps = true
-                    ++index
+                cfg.externalMaps = true
+                ++index
 
             when '-lp' or '--loader-prefix'
                 value = args[index + 1]

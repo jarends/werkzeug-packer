@@ -12,11 +12,11 @@
     watch: false,
     bundles: [],
     base: process.cwd(),
-    useBabel: true,
+    useBabel: false,
     useUglify: false,
     loaderPrefix: 'es6-promise!',
     chunks: './js/chunk_',
-    fffMaps: true,
+    fffMaps: false,
     externalMaps: false
   };
 
@@ -47,7 +47,7 @@
   };
 
   cfgFromArgs = function() {
-    var arg, args, basePath, inPath, index, outPath, use, value;
+    var arg, args, basePath, inPath, index, outPath, value;
     args = process.argv.slice(2);
     if (args.length === 0) {
       args = ['-h'];
@@ -79,14 +79,8 @@
           }
           break;
         case '-w' || '--watch':
-          use = args[index + 1];
-          if (use === 'false' || use === 'true') {
-            cfg.watch = use === 'true';
-            index = index + 2;
-          } else {
-            cfg.watch = true;
-            ++index;
-          }
+          cfg.watch = true;
+          ++index;
           break;
         case '-h' || '--help':
           if (args.length > 1) {
@@ -116,44 +110,20 @@
           }
           break;
         case '-ub' || '--use-babel':
-          use = args[index + 1];
-          if (use === 'false' || use === 'true') {
-            cfg.useBabel = use === 'true';
-            index = index + 2;
-          } else {
-            cfg.useBabel = true;
-            ++index;
-          }
+          cfg.useBabel = true;
+          ++index;
           break;
         case '-uu' || '--use-uglify':
-          use = args[index + 1];
-          if (use === 'false' || use === 'true') {
-            cfg.useUglify = use === 'true';
-            index = index + 2;
-          } else {
-            cfg.useUglify = true;
-            ++index;
-          }
+          cfg.useUglify = true;
+          ++index;
           break;
         case '-im' || '--inline-maps':
-          use = args[index + 1];
-          if (use === 'false' || use === 'true') {
-            cfg.fffMaps = use === 'true';
-            index = index + 2;
-          } else {
-            cfg.fffMaps = true;
-            ++index;
-          }
+          cfg.fffMaps = true;
+          ++index;
           break;
         case '-em' || '--external-maps':
-          use = args[index + 1];
-          if (use === 'false' || use === 'true') {
-            cfg.externalMaps = use === 'true';
-            index = index + 2;
-          } else {
-            cfg.externalMaps = true;
-            ++index;
-          }
+          cfg.externalMaps = true;
+          ++index;
           break;
         case '-lp' || '--loader-prefix':
           value = args[index + 1];
